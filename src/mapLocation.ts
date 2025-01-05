@@ -5,7 +5,6 @@ type MapTag =
   | "BOSS"
   | "SHOP"
   | "INN"
-  | "SERPENT"
   | "AIRSHIP"
   | "FALCON"
   | "HOVERCRAFT"
@@ -70,8 +69,8 @@ const doorsRandoLocations: MapLocation[] = [
   },
   {
     id: "Baron",
-    tags: ["SERPENT"],
-    doors: ["Exit", "Item", "Inn", "Rosa", "Weapon", "Cid", "Waterway"],
+    tags: [],
+    doors: ["Exit", "Item", "Inn", "Rosa", "Weapon", "Cid", "Waterway", "Serpent"],
   },
   {
     id: "BaronInn",
@@ -160,8 +159,8 @@ const doorsRandoLocations: MapLocation[] = [
   },
   {
     id: "Mysidia",
-    tags: ["SERPENT"],
-    doors: ["Exit", "Weapon", "Armor", "Wishes", "Inn", "Item"],
+    tags: [],
+    doors: ["Exit", "Weapon", "Armor", "Wishes", "Inn", "Item", "Serpent"],
   },
   {
     id: "HouseOfWishes",

@@ -6,7 +6,6 @@ import MapIcon from "@mui/icons-material/Map";
 import HouseboatIcon from "@mui/icons-material/Houseboat";
 import RocketIcon from "@mui/icons-material/Rocket";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
-import LinkIcon from "@mui/icons-material/Link";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import HouseIcon from "@mui/icons-material/House";
 import PetsIcon from "@mui/icons-material/Pets";
@@ -36,8 +35,6 @@ const LocationCardIcons: FunctionComponent<{ tags: MapTag[] }> = ({ tags }) => {
           return <ShoppingCartIcon key={i} {...iconProps} />;
         case "INN":
           return <HouseIcon key={i} {...iconProps} />;
-        case "SERPENT":
-          return <LinkIcon key={i} {...iconProps} />;
         case "AIRSHIP":
           return <AirplanemodeActiveIcon key={i} {...iconProps} />;
         case "FALCON":
