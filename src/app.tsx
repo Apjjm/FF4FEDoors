@@ -21,7 +21,12 @@ const HeaderContent: FunctionComponent = () => {
           variant="standard"
           label="Search"
           size="small"
-          onChange={(ev) => locationsDispatch?.({ id: "APPLY_SEARCH_TERM", term: ev.target.value })}
+          onChange={(ev) =>
+            locationsDispatch?.({
+              id: "APPLY_SEARCH_TERM",
+              term: ev.target.value,
+            })
+          }
           slotProps={{ input: { endAdornment: <SearchIcon /> } }}
         />
         <Button variant="outlined" color="secondary" onClick={() => locationsDispatch?.({ id: "RESET" })}>

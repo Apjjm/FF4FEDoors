@@ -73,14 +73,25 @@ const ChildLocationCard: FunctionComponent<{
             size="small"
             autoHighlight={true}
             options={locationOptions}
-            value={locationModel?.coarseId ?? ""}
-            onChange={(_, v) => dispatch({ id: "SET_DOOR", on: parentId, door: parentDoor, value: v ?? undefined })}
+            value={locationModel?.id ?? ""}
+            onChange={(_, v) =>
+              dispatch({
+                id: "SET_DOOR",
+                on: parentId,
+                door: parentDoor,
+                value: v ?? undefined,
+              })
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="standard"
                 slotProps={{
-                  input: { ...params.InputProps, disableUnderline: true, style: { padding: 0, margin: 0 } },
+                  input: {
+                    ...params.InputProps,
+                    disableUnderline: true,
+                    style: { padding: 0, margin: 0 },
+                  },
                   inputLabel: params.InputLabelProps,
                 }}
               />
@@ -95,7 +106,10 @@ const ChildLocationCard: FunctionComponent<{
   );
 };
 
-const LocationCard: FunctionComponent<{ locationId: string; visited: string[] }> = ({ locationId, visited }) => {
+const LocationCard: FunctionComponent<{
+  locationId: string;
+  visited: string[];
+}> = ({ locationId, visited }) => {
   const model = useContext(LocationsModelContext);
   const dispatch = useContext(LocationsDispatchContext);
 

@@ -15,7 +15,6 @@ type MapLocation = {
   id: string;
   doors: string[];
   tags: MapTag[];
-  virtual?: boolean; // Indicates this map location isn't a real map location, but is instead used to represent a class of map locations (e.g. a shop)
 };
 
 const doorsRandoLocations: MapLocation[] = [
@@ -159,7 +158,7 @@ const doorsRandoLocations: MapLocation[] = [
   },
   {
     id: "Mysidia",
-    tags: [],
+    tags: ["WHALE"],
     doors: ["Exit", "Weapon", "Armor", "Wishes", "Inn", "Item", "Serpent"],
   },
   {
@@ -316,31 +315,23 @@ const doorsRandoLocations: MapLocation[] = [
     id: "ChocoboForest",
     tags: [],
     doors: ["Exit"],
-    virtual: true
   },
   {
     id: "Shop",
     tags: ["SHOP"],
     doors: ["Exit"],
-    virtual: true
   },
   {
     id: "Inn",
     tags: ["INN"],
     doors: ["Exit"],
-    virtual: true
   },
   {
     id: "Zonk",
     tags: [],
     doors: ["Exit"],
-    virtual: true
   },
 ] as const;
 
-const toVirtualId = (roomId: string, doorId: string, virtualId: string) => `${virtualId}:${doorId}/${roomId}`;
-const doorRandoVirtualLocations = doorsRandoLocations.filter((x) => !!x.virtual);
-const doorRandoRealLocations = doorsRandoLocations.filter((x) => !x.virtual);
-
 export type { MapLocation, MapTag };
-export { doorsRandoLocations, toVirtualId, doorRandoVirtualLocations, doorRandoRealLocations };
+export { doorsRandoLocations };

@@ -1,4 +1,5 @@
-import { Box, SvgIconProps } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { SvgIconProps } from "@mui/material";
 import { FunctionComponent } from "react";
 import { MapTag } from "./mapLocation";
 
@@ -14,48 +15,31 @@ import SportsMmaIcon from "@mui/icons-material/SportsMma";
 import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
 
 const iconProps: SvgIconProps = {
-  color: "primary",
+  color: "disabled",
   fontSize: "small",
 };
 
 const LocationCardIcons: FunctionComponent<{ tags: MapTag[] }> = ({ tags }) => {
-  const icons = tags
-    .sort()
-    .map((t, i) => {
-      switch (t) {
-        case "MAP":
-          return <MapIcon key={i} {...iconProps} />;
-        case "CHARACTER":
-          return <PersonIcon key={i} {...iconProps} />;
-        case "CHECK":
-          return <LocalPostOfficeIcon key={i} {...iconProps} />;
-        case "BOSS":
-          return <SportsMmaIcon key={i} {...iconProps} />;
-        case "SHOP":
-          return <ShoppingCartIcon key={i} {...iconProps} />;
-        case "INN":
-          return <HouseIcon key={i} {...iconProps} />;
-        case "AIRSHIP":
-          return <AirplanemodeActiveIcon key={i} {...iconProps} />;
-        case "FALCON":
-          return <AirplanemodeActiveIcon key={i} {...iconProps} />;
-        case "HOVERCRAFT":
-          return <HouseboatIcon key={i} {...iconProps} />;
-        case "WHALE":
-          return <RocketIcon key={i} {...iconProps} />;
-        case "CHOCOBO":
-          return <PetsIcon key={i} {...iconProps} />;
-        default:
-          return null;
-      }
-    })
-    .filter((x) => !!x);
-
-  return icons.length > 0 ? (
-    <Box display="flex" flexDirection="row-reverse" flexGrow={1}>
-      {icons}
-    </Box>
-  ) : null;
+  return (
+    <Grid container spacing={2}>
+      <Grid size={2}></Grid>
+      <Grid size={2}>
+        {tags.includes("MAP") && <MapIcon {...iconProps} />}
+        {tags.includes("SHOP") && <ShoppingCartIcon {...iconProps} />}
+        {tags.includes("INN") && <HouseIcon {...iconProps} />}
+      </Grid>
+      <Grid size={2}>{tags.includes("BOSS") && <SportsMmaIcon {...iconProps} />}</Grid>
+      <Grid size={2}>{tags.includes("CHECK") && <LocalPostOfficeIcon {...iconProps} />}</Grid>
+      <Grid size={2}>{tags.includes("CHARACTER") && <PersonIcon {...iconProps} />}</Grid>
+      <Grid size={2}>
+        {tags.includes("AIRSHIP") && <AirplanemodeActiveIcon {...iconProps} />}
+        {tags.includes("FALCON") && <AirplanemodeActiveIcon {...iconProps} />}
+        {tags.includes("HOVERCRAFT") && <HouseboatIcon {...iconProps} />}
+        {tags.includes("WHALE") && <RocketIcon {...iconProps} />}
+        {tags.includes("CHOCOBO") && <PetsIcon {...iconProps} />}
+      </Grid>
+    </Grid>
+  );
 };
 
 export { LocationCardIcons };

@@ -1,15 +1,8 @@
 import { createContext, useReducer, FunctionComponent, ReactElement } from "react";
-import {
-  MapTag,
-  doorRandoRealLocations,
-  doorRandoVirtualLocations,
-  doorsRandoLocations,
-  toVirtualId,
-} from "./mapLocation";
+import { MapTag, doorsRandoLocations } from "./mapLocation";
 
 type LocationModel = {
   id: string;
-  coarseId: string; // Id before any toVirtualId stuff
   tags: MapTag[];
   doors: Record<string, string | undefined>;
   hidden: boolean;
@@ -31,34 +24,21 @@ type LocationsModelAction =
 const locationsModelInit = (): LocationModelState => {
   const result: LocationModelState = {};
 
-  doorRandoRealLocations.forEach((x) => {
+  doorsRandoLocations.forEach((x) => {
     const doors: Record<string, string | undefined> = {};
-    x.doors.forEach((y) => (doors[y] = undefined));
-
-    result[x.id] = { id: x.id, coarseId: x.id, tags: x.tags, doors: doors, hidden: false, matching: false };
-
-    // virtual locations are unique per door (e.g. it's a logically different shop)
-    x.doors.forEach((d) => {
-      doorRandoVirtualLocations.forEach((y) => {
-        const leaf: LocationModel = {
-          id: toVirtualId(x.id, d, y.id),
-          coarseId: y.id,
-          tags: y.tags,
-          doors: { [y.doors[0]]: x.id },
-          hidden: false,
-          matching: false
-        };
-        result[leaf.id] = leaf;
-      });
-    });
+    if (x.doors.length > 1) {
+      // Omit doors with exactly one exit, we tend to re-use these for e.g. shops
+      x.doors.forEach((y) => (doors[y] = undefined));
+    }
+    result[x.id] = { id: x.id, tags: x.tags, doors: doors, hidden: false, matching: false };
   });
 
   return result;
 };
 
 const applySearchTerm = (s: LocationModelState, term: string | undefined): LocationModelState => {
-  const newState : LocationModelState = {};
-  Object.entries(s).forEach(([k, v]) => newState[k] = { ...v, hidden: false });
+  const newState: LocationModelState = {};
+  Object.entries(s).forEach(([k, v]) => (newState[k] = { ...v, hidden: false, matching: false }));
   if (!term) {
     return newState;
   }
@@ -71,10 +51,10 @@ const applySearchTerm = (s: LocationModelState, term: string | undefined): Locat
       return true;
     }
 
-    const model = newState[id]
-    model.matching = strMatch(id)
+    const model = newState[id];
+    model.matching = strMatch(id);
     model.hidden = !model.matching;
-    if (model.hidden && model.coarseId == id) {
+    if (model.hidden) {
       const newVisited = [...visited, id];
       Object.values(model.doors).forEach((c) => (model.hidden &&= !c || processHiddenInTree(c, newVisited)));
     }
@@ -98,14 +78,7 @@ const locationsModelReducer = (state: LocationModelState, action: LocationsModel
       }
 
       const dst = doorsRandoLocations.find((x) => x.id == action.value);
-      if (dst && dst.virtual) {
-        const dstId = toVirtualId(src.id, action.door, dst.id);
-        return {
-          ...state,
-          [src.id]: { ...src, doors: { ...src.doors, [action.door]: dstId } },
-          [dstId]: { ...state[dstId], hidden: false },
-        };
-      } else if (dst) {
+      if (dst) {
         return {
           ...state,
           [src.id]: { ...src, doors: { ...src.doors, [action.door]: dst.id } },
@@ -126,8 +99,6 @@ const locationsModelReducer = (state: LocationModelState, action: LocationsModel
       return locationsModelInit();
     }
   }
-
-  return { ...state };
 };
 
 const LocationsModelContext = createContext<LocationModelState | undefined>(undefined);
